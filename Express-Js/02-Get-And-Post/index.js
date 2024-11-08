@@ -22,6 +22,12 @@ app.get("/users", (req, res) => {
 
 app.post("/user", (req, res) => {
     const { name } = req.body;
+    if (!name) {
+        res.send({
+            message: "Name is Required",
+        });
+        return;
+    }
     users.push({
         id: users.length + 1,
         name,
