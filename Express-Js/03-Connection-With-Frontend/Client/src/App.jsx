@@ -8,15 +8,21 @@ export default function App() {
       try {
         const data = await axios.get("http://localhost:3000/users");
         setUsers(data.data);
-        console.log(data.data);
       } catch (err) {
         console.log(err.message);
       }
     })();
   }, [])
   return (
-    <div>
+    <div className="">
       <h1>Hello, World!</h1>
+      {users.length > 0 ? users.map(item => {
+        return (
+          <div key={item.id}>
+            <h2>{item.name}</h2>
+          </div>
+        )
+      }) : <h1>Loading.....</h1>}
     </div>
   )
 }
