@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 
 app.get("/users", (req, res) => {
     res.status(200).json(users);
-})
+});
 
 app.post("/user", (req, res) => {
     const { name } = req.body;
@@ -36,6 +36,12 @@ app.post("/user", (req, res) => {
     users.push(user);
     res.status(201).json({ message: "User Created Successfully", data: users });
 });
+
+app.get("/user/:id", (req, res) => {
+    const { id } = req.params;
+    const index = users.findIndex((user) => user.id === parseInt(id));
+    res.send(users[index]);
+})
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
