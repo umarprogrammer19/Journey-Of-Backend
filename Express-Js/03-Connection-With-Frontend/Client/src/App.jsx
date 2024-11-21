@@ -1,10 +1,12 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function App() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
+  const getName = useRef();
+
   useEffect(() => {
     (async () => {
       try {
@@ -15,13 +17,12 @@ export default function App() {
       }
     })();
   }, []);
-  const getName = useRef();
 
   const addUsers = async (event) => {
     event.preventDefault();
     if (!getName.current.value) return setError("Name is required");
-    const newUser = { id: users.length + 1, name: getName.current.value };
-    setUsers([newUser, ...users]);
+    users.push({ id: users.length + 1, name: getName.current.value });
+    setUsers([...users]);
     try {
       await axios.post("http://localhost:3000/user", {
         name: getName.current.value,
@@ -42,7 +43,7 @@ export default function App() {
     } catch (error) {
       setError("Cannot Delete The User");
     }
-  }
+  };
 
   const editUser = async (id, index) => {
     const newName = prompt("Enter New Name");
@@ -53,29 +54,71 @@ export default function App() {
       await axios.put(`http://localhost:3000/user/${id}`, {
         name: newName,
       });
-      setError(null)
+      setError(null);
     } catch (error) {
       setError("Cannot Edit The User");
     }
-  }
+  };
+
   return (
-    <div>
-      <h1>Hello, World!</h1>
-      <form onSubmit={addUsers}>
-        <input type="text" name="name" placeholder="Name" ref={getName} />
-        <button type="submit">Add User</button>
-      </form>
-      {error && <p className="text-red-600">{error}</p>}
-      {users.length > 0 ? users.map((item, index) => {
-        return (
-          <div key={item.id}>
-            <h2>{item.name}</h2>
-            <Link to={`/user/${item.id}`}>View</Link>
-            <button onClick={async () => await deleteUser(item.id, index)}>Delete</button>
-            <button onClick={async () => await editUser(item.id, index)}>Edit</button>
+    <div className="min-h-screen bg-gray-100 p-4 sm:p-8">
+      <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">User Management</h1>
+        <form onSubmit={addUsers} className="mb-6">
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter Name"
+              ref={getName}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <button
+              type="submit"
+              className="w-32 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
+            >
+              Add User
+            </button>
           </div>
-        )
-      }) : <h1>No User Found</h1>}
+          {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+        </form>
+        <div className="space-y-4">
+          {users.length > 0 ? (
+            users.map((item, index) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between bg-gray-50 p-4 rounded-lg shadow-sm"
+              >
+                <div>
+                  <h2 className="text-lg font-medium text-gray-800">{item.name}</h2>
+                  <Link
+                    to={`/user/${item.id}`}
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    View Details
+                  </Link>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={async () => await editUser(item.id, index)}
+                    className="px-3 py-1 bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 transition"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={async () => await deleteUser(item.id, index)}
+                    className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <h1 className="text-center text-gray-500">No Users Found</h1>
+          )}
+        </div>
+      </div>
     </div>
-  )
+  );
 }
