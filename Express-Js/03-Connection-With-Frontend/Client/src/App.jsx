@@ -38,8 +38,24 @@ export default function App() {
     setUsers([...users]);
     try {
       await axios.delete(`http://localhost:3000/user/${id}`);
+      setError(null);
     } catch (error) {
       setError("Cannot Delete The User");
+    }
+  }
+
+  const editUser = async (id, index) => {
+    const newName = prompt("Enter New Name");
+    if (!newName) return setError("New Name Is Required For Editing");
+    users[index].name = newName;
+    setUsers([...users]);
+    try {
+      await axios.put(`http://localhost:3000/user/${id}`, {
+        name: newName,
+      });
+      setError(null)
+    } catch (error) {
+      setError("Cannot Edit The User");
     }
   }
   return (
@@ -56,6 +72,7 @@ export default function App() {
             <h2>{item.name}</h2>
             <Link to={`/user/${item.id}`}>View</Link>
             <button onClick={async () => await deleteUser(item.id, index)}>Delete</button>
+            <button onClick={async () => await editUser(item.id, index)}>Edit</button>
           </div>
         )
       }) : <h1>No User Found</h1>}
