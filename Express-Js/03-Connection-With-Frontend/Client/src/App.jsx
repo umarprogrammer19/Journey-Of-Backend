@@ -32,6 +32,16 @@ export default function App() {
     }
     getName.current.value = "";
   };
+
+  const deleteUser = async (id, index) => {
+    users.splice(index, 1);
+    setUsers([...users]);
+    try {
+      await axios.delete(`http://localhost:3000/user/${id}`);
+    } catch (error) {
+      setError("Cannot Delete The User");
+    }
+  }
   return (
     <div>
       <h1>Hello, World!</h1>
@@ -40,11 +50,12 @@ export default function App() {
         <button type="submit">Add User</button>
       </form>
       {error && <p className="text-red-600">{error}</p>}
-      {users.length > 0 ? users.map(item => {
+      {users.length > 0 ? users.map((item, index) => {
         return (
           <div key={item.id}>
             <h2>{item.name}</h2>
             <Link to={`/user/${item.id}`}>View</Link>
+            <button onClick={async () => await deleteUser(item.id, index)}>Delete</button>
           </div>
         )
       }) : <h1>No User Found</h1>}
