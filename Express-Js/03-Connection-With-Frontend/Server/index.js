@@ -4,16 +4,7 @@ import cors from "cors";
 const app = express();
 const port = process.env.PORT;
 
-const users = [{
-    id: 1,
-    name: "Umar Farooq",
-}, {
-    id: 2,
-    name: "Ali Khan",
-}, {
-    id: 3,
-    name: "Ahmed",
-}];
+const users = [];
 
 app.use(express.json());
 app.use(cors());
