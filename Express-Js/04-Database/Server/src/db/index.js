@@ -9,4 +9,6 @@ const connectDatabase = async () => {
     } catch (error) {
         console.error(`Database Connection Failed ${error.message}`);
     }
-}
+};
+
+export default connectDatabase;
