@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function App() {
   const [users, setUsers] = useState([]);
@@ -30,6 +31,7 @@ export default function App() {
           <div key={item._id} className="flex flex-col mb-5">
             <p>Name: {item.name}</p>
             <p>Age: {item.age}</p>
+            <Link to={`/users/${item._id}`}>View</Link>
           </div>
         )
       }) : <h1>Loading...</h1>}
