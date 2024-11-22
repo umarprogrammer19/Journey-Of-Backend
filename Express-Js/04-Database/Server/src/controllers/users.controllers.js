@@ -21,5 +21,11 @@ const getSingleUser = async (req, res) => {
     res.status(200).json(user);
 }
 
+const deleteUser = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({ message: "User not found By This Id" });
+    await Users.findByIdAndDelete(id);
+    res.status(202).json({ message: "User Deleted Successfully", users: await Users.find({}) });
+}
 
-export { addUsers, getAllUsers, getSingleUser };
+export { addUsers, getAllUsers, getSingleUser, deleteUser };
