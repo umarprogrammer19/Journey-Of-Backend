@@ -59,6 +59,8 @@ export default function App() {
             <p>Age: {item.age}</p>
             <div>
               <Link to={`/users/${item._id}`}>View</Link>
+              <button>Delete</button>
+              <button>Edit</button>
             </div>
           </div>
         )
