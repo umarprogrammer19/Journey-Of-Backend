@@ -15,15 +15,33 @@ export default function SingleUser() {
                 setError(`Cannot Fetch Single User ${error.message}`);
             }
         })()
-    }, [id])
+    }, [id, user]);
     return (
         <>
-            <h1>User Details</h1>
-            {error && <p>{error}</p>}
-            {user && <div>
-                <p>Name: {user.name}</p>
-                <p>Age: {user.age}</p>
-            </div>}
+            <h1 className="text-2xl font-bold text-center mt-6 underline">User Details</h1>
+
+            {/* Error Message */}
+            {error && (
+                <p className="text-red-600 text-center mt-4 font-medium">
+                    {error}
+                </p>
+            )}
+
+            {/* User Details */}
+            {user ? (
+                <div className="max-w-sm mx-auto mt-6 p-4 border border-gray-300 rounded shadow-md">
+                    <p className="text-lg font-semibold">
+                        Name: <span className="text-gray-700">{user.name}</span>
+                    </p>
+                    <p className="text-lg font-semibold">
+                        Age: <span className="text-gray-700">{user.age}</span>
+                    </p>
+                </div>
+            ) : (
+                <p className="text-center mt-6 text-gray-500">
+                    Loading user details...
+                </p>
+            )}
         </>
     );
 };
