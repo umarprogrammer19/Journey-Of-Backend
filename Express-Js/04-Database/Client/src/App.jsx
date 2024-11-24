@@ -75,26 +75,71 @@ export default function App() {
   }
   return (
     <>
-      <h1 className="text-center mt-4 text-3xl underline font-bold">User Management</h1>
-      <form onSubmit={addUser}>
-        <input className="border border-[black] me-3" type="text" ref={getName} />
-        <input className="border border-[black] me-3" type="number" ref={getAge} />
-        <button type="submit" className="bg-[black] text-white px-2 py-1 rounded">Add User</button>
+      <h1 className="text-center mt-6 text-3xl font-bold underline">User Management</h1>
+
+      <form
+        onSubmit={addUser}
+        className="flex flex-col items-center gap-4 my-6"
+      >
+        <input
+          className="border border-black rounded px-4 py-2 w-64"
+          type="text"
+          ref={getName}
+          placeholder="Enter Name"
+        />
+        <input
+          className="border border-black rounded px-4 py-2 w-64"
+          type="number"
+          ref={getAge}
+          placeholder="Enter Age"
+        />
+        <button
+          type="submit"
+          className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+        >
+          Add User
+        </button>
       </form>
-      {error && <p>{error}</p>}
-      {users.length > 0 ? users.map((item) => {
-        return (
-          <div key={item._id} className="flex flex-col mb-5">
-            <p>Name: {item.name}</p>
-            <p>Age: {item.age}</p>
-            <div className="flex gap-4">
-              <Link to={`/users/${item._id}`} className="text-blue-600">View</Link>
-              <button className="bg-red-600 text-white px-3 py-1 rounded" onClick={async () => await deleteUser(item._id)}>Delete</button>
-              <button className="bg-green-700 text-white px-3 py-1 rounded" onClick={async () => await editUser(item._id)}>Edit</button>
+
+      {error && (
+        <p className="text-red-600 text-center font-medium">{error}</p>
+      )}
+
+      <div className="flex flex-col items-center mt-6">
+        {users.length > 0 ? (
+          users.map((user) => (
+            <div
+              key={user._id}
+              className="w-full max-w-md p-4 mb-4 border border-gray-300 rounded shadow-lg"
+            >
+              <p className="font-semibold">Name: <span className="text-gray-700">{user.name}</span></p>
+              <p className="font-semibold">Age: <span className="text-gray-700">{user.age}</span></p>
+              <div className="flex justify-between mt-4">
+                <Link
+                  to={`/users/${user._id}`}
+                  className="text-blue-600 hover:underline"
+                >
+                  View
+                </Link>
+                <button
+                  className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
+                  onClick={async () => await deleteUser(user._id)}
+                >
+                  Delete
+                </button>
+                <button
+                  className="bg-green-700 text-white px-3 py-1 rounded hover:bg-green-600"
+                  onClick={async () => await editUser(user._id)}
+                >
+                  Edit
+                </button>
+              </div>
             </div>
-          </div>
-        )
-      }) : <h1>Loading...</h1>}
+          ))
+        ) : (
+          <h1 className="text-center mt-4 text-xl text-gray-500">Loading...</h1>
+        )}
+      </div>
     </>
   );
 };
