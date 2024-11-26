@@ -4,6 +4,7 @@ import connectDatabase from "./src/db/index.js";
 import userRoutes from "./src/routes/users.routes.js";
 import cors from "cors";
 
+// Middle Ware
 const app = express();
 const port = process.env.PORT;
 
