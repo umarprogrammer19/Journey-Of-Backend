@@ -4,6 +4,7 @@ import "dotenv/config";
 const app = express();
 const port = process.env.PORT;
 
+// First Route
 app.get("/", (req, res) => {
     res.send("Hello World");
 });
