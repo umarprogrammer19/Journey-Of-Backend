@@ -2,6 +2,7 @@ import express from "express";
 import { dbConnection } from "./src/db/index.js";
 import "dotenv/config";
 import cors from "cors";
+import router from "./src/routes/users.routes.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -11,6 +12,8 @@ app.use(cors());
 app.get("/", (req, res) => {
     res.send("<h1>Hello World</h1>");
 });
+
+app.use("/api/v1",router);
 
 dbConnection().then(() => {
     app.listen(port || 4000, () => {
