@@ -32,30 +32,44 @@ const signUp = async (req, res) => {
 };
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
-    if (!email) return res.status(400).json({ message: "Email is Required" });
-    if (!password) return res.status(400).json({ message: "Password is Required" });
+    try {
+        const { email, password } = req.body;
+        if (!email) return res.status(400).json({ message: "Email is Required" });
+        if (!password) return res.status(400).json({ message: "Password is Required" });
 
-    const user = await Users.findOne({ email });
-    if (!user) return res.status(404).json({ message: "User Does Not Exists With This Email" });
+        const user = await Users.findOne({ email });
+        if (!user) return res.status(404).json({ message: "User Does Not Exists With This Email" });
 
-    const isTruePassword = await bcrypt.compare(password, user.password);
-    if (!isTruePassword) return res.status(400).json({ message: "Password Is Incorrect" });
+        const isTruePassword = await bcrypt.compare(password, user.password);
+        if (!isTruePassword) return res.status(400).json({ message: "Password Is Incorrect" });
 
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+        const accessToken = generateAccessToken(user);
+        const refreshToken = generateRefreshToken(user);
 
-    res.cookie("refreshToken", refreshToken, {
-        http: true,
-        secure: false,
-    });
+        res.cookie("refreshToken", refreshToken, {
+            http: true,
+            secure: false,
+        });
 
-    res.status(200).json({
-        message: "User Logged In Successfully",
-        accessToken,
-        refreshToken,
-        user,
-    })
+        res.status(200).json({
+            message: "User Logged In Successfully",
+            accessToken,
+            refreshToken,
+            user,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "An error occurred during Login" });
+    }
+};
 
-}
+const logout = async (req, res) => {
+    try {
+        res.clearcookie("refreshToken");
+        res.status(200)
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: "An error occurred during Logout" })
+    };
+};
 export { signUp, login };
