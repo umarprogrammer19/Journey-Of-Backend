@@ -72,4 +72,4 @@ const logout = async (req, res) => {
         res.status(400).json({ message: "An error occurred during Logout" })
     };
 };
-export { signUp, login };
+export { signUp, login, logout };
