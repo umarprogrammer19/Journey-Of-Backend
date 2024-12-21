@@ -65,8 +65,8 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-        res.clearcookie("refreshToken");
-        res.status(200)
+        res.clearCookie("refreshToken");
+        res.status(200).json({ message: "Logout Successfull" })
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: "An error occurred during Logout" })
