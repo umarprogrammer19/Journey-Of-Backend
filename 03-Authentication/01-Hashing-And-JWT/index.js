@@ -13,6 +13,7 @@ console.log(jwtToken);
 const verify = jwt.verify(jwtToken, "secretKJwtKey");
 console.log(verify);
 
+// First Route
 app.get("/", (req, res) => {
     res.send("Hello World");
 });
