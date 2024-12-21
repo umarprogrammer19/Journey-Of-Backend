@@ -15,10 +15,12 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1",router);
 
-dbConnection().then(() => {
+dbConnection()
+.then(() => {
     app.listen(port || 4000, () => {
         console.log("Server Is Running On Port", port);
     });
-}).catch(err => {
-    console.log("Connection Failed", err.message);
 })
+.catch(err => {
+    console.log("Connection Failed", err.message);
+});
