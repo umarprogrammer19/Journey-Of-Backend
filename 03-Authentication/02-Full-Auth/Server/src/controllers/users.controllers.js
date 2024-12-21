@@ -13,7 +13,7 @@ const generateRefreshToken = (user) => {
     });
 };
 
-const signUp = async (req, res) => {
+export const signUp = async (req, res) => {
     try {
         const { fullName, email, password } = req.body;
         if (!fullName) return res.status(400).json({ message: "Full Name is Required" });
@@ -31,7 +31,7 @@ const signUp = async (req, res) => {
     };
 };
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email) return res.status(400).json({ message: "Email is Required" });
@@ -63,7 +63,7 @@ const login = async (req, res) => {
     }
 };
 
-const logout = async (req, res) => {
+export const logout = async (req, res) => {
     try {
         res.clearCookie("refreshToken");
         res.status(200).json({ message: "Logout Successfull" })
@@ -72,4 +72,3 @@ const logout = async (req, res) => {
         res.status(400).json({ message: "An error occurred during Logout" })
     };
 };
-export { signUp, login, logout };
