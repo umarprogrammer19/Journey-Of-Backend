@@ -2,7 +2,7 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 const app = express();
-const port = process.env.PORT;
+const port = 4000;
 
 const users = [];
 
@@ -12,7 +12,16 @@ app.use(cors());
 
 
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.json({
+        id: "10",
+        imageUrl: "/images/p_1.png",
+        title: "Syltherine",
+        description: "Stylish cafe chair",
+        price: "27000",
+        otherPrice: "3.500.000",
+        type: "DISCOUNTED",
+        typeValue: "-30%",
+    },);
 });
 
 app.get("/users", (req, res) => {
