@@ -3,11 +3,15 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const generateAccessToken = (user) => {
-    jwt.sign({ email: user.email }, process.env.ACCESS_JWT_SECRET, { expiresIn: "6h" });
-}
+    return jwt.sign({ email: user.email }, process.env.ACCESS_JWT_SECRET, {
+        expiresIn: "6h",
+    });
+};
 const generateRefreshToken = (user) => {
-    jwt.sign({ email: user.email }, process.env.REFRESH_JWT_SECRET, { expiresIn: "7d" });
-}
+    return jwt.sign({ email: user.email }, process.env.REFRESH_JWT_SECRET, {
+        expiresIn: "7d",
+    });
+};
 
 const signUp = async (req, res) => {
     try {
