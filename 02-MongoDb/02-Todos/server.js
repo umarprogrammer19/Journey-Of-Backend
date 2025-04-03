@@ -1,5 +1,7 @@
 import express from "express";
 import { connectDB } from "./src/db/connection.js";
+import todoRouter from "./src/routes/todos.routes.js"
+import "dotenv/config";
 
 const app = express();
 const port = 8000;
@@ -19,6 +21,8 @@ const todos = [{
 app.get("/", (req, res) => {
     res.send("<h1>Hello World</h1>");
 });
+
+app.use("/api/v1", todoRouter);
 
 app.get("/item", (req, res) => {
     res.status(200).json({
