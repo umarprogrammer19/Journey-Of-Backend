@@ -1,4 +1,5 @@
 import express from "express";
+import { connectDB } from "./src/db/connection.js";
 
 const app = express();
 const port = 8000;
@@ -69,6 +70,8 @@ app.put("/edit/:id", (req, res) => {
     })
 });
 
-app.listen(port, () => {
-    console.log("Server is Running on the port", port);
-});
+connectDB().then(() => {
+    app.listen(port, () => {
+        console.log("Server is Running on the port", port);
+    });
+}).catch(err => console.log(err));
