@@ -15,3 +15,27 @@ export const getTodos = async (req, res) => {
         });
     };
 };
+
+export const addTodos = async (req, res) => {
+    try {
+        const { title } = req.body;
+        if (!title) return res.status(400).json({
+            message: "All feilds Are Required",
+        });
+        const newTodo = await todosModels.create({ title });
+
+        if (!newTodo) return res.status(400).json({
+            message: "Failed To Create",
+        });
+
+        res.status(201).json({
+            message: "Created Successfully",
+            newTodo
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+}
