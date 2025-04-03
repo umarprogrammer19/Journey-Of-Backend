@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import todosModels from "../models/todos.models.js";
 
 export const getTodos = async (req, res) => {
@@ -37,5 +38,30 @@ export const addTodos = async (req, res) => {
         res.status(500).json({
             message: "Internal Server Error",
         });
-    }
-}
+    };
+};
+
+export const deleteTodos = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) return res.status(400).json({
+            message: "id not found",
+        });
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid ID." });
+        }
+
+        await todosModels.findByIdAndDelete(id);
+
+        res.status(201).json({
+            message: "Deleted Successfully",
+        })
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({
+            message: "Internal Server Error",
+        });
+    };
+};
