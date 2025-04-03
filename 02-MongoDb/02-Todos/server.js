@@ -28,6 +28,7 @@ app.get("/item", (req, res) => {
 
 app.post("/addItems", (req, res) => {
     const { item } = req.body;
+    if (!item) return res.status(400).json("Please Enter An Item");
     todos.push({
         id: todos.length + 1,
         item,
@@ -47,6 +48,23 @@ app.delete("/delete/:id", (req, res) => {
     todos.splice(index, 1);
     res.status(200).json({
         message: "Item Deleted Success",
+        newItems: todos,
+    })
+});
+
+app.put("/edit/:id", (req, res) => {
+    const { id } = req.params;
+    const { newItem } = req.body;
+    if (!newItem) return res.status(400).json("Please Enter An Item");
+    const index = todos.findIndex((item) => item.id === parseInt(id));
+
+    if (index == -1) return res.status(404).json("Item Not Found");
+    todos.splice(index, 1, {
+        id: parseInt(id),
+        item: newItem
+    });
+    res.status(200).json({
+        message: "Item Edit Success",
         newItems: todos,
     })
 });
