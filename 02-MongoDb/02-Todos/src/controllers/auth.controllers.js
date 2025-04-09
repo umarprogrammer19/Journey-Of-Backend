@@ -62,9 +62,6 @@ export const login = async (req, res) => {
             message: "Invalid Email Or Password"
         });
 
-        console.log(comparedPassword, existingUser.password, password);
-
-
         const token = generateAccessToken(existingUser);
 
         if (!token) return res.status(400).json({
@@ -91,4 +88,58 @@ export const login = async (req, res) => {
             message: "Internal Server Error",
         });
     }
-}
+};
+
+export const logoutUser = async (req, res) => {
+    try {
+        res.cookie("access_token", "", {
+            expires: new Date(0),
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Logged out successfully",
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
+    }
+};
+
+export const getUser = async (req, res) => {
+    try {
+        const user = req.user;
+
+        if (!user) return res.status(401).json({
+            success: false,
+            message: "Unauthorized"
+        });
+
+        const id = user.id;
+
+        const existingUser = await userModel.findById(id);
+
+        if (!existingUser) return res.status(404).json({
+            success: false,
+            message: "User Not Found"
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "User Data Fetched Successfully",
+            user: existingUser
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
+    }
+};
