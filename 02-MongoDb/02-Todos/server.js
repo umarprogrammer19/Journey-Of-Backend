@@ -1,13 +1,18 @@
 import express from "express";
 import { connectDB } from "./src/db/connection.js";
 import cors from "cors";
+import cookieParser from "cookie-parser"
 import todoRouter from "./src/routes/todos.routes.js";
 import authRouter from "./src/routes/auth.routes.js";
 import "dotenv/config";
 
 const app = express();
 const port = 8000;
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+}));
 app.use(express.json());
 
 const todos = [{
