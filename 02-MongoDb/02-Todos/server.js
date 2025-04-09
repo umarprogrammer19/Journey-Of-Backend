@@ -1,6 +1,7 @@
 import express from "express";
 import { connectDB } from "./src/db/connection.js";
-import todoRouter from "./src/routes/todos.routes.js"
+import todoRouter from "./src/routes/todos.routes.js";
+import authRouter from "./src/routes/auth.routes.js";
 import "dotenv/config";
 
 const app = express();
@@ -22,7 +23,8 @@ app.get("/", (req, res) => {
     res.send("<h1>Hello World</h1>");
 });
 
-app.use("/api/v1", todoRouter);
+app.use("/api/v1", authRouter);
+app.use("/api/v2", todoRouter);
 
 app.get("/item", (req, res) => {
     res.status(200).json({
