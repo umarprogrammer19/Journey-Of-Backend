@@ -20,10 +20,19 @@ export const getTodos = async (req, res) => {
 export const addTodos = async (req, res) => {
     try {
         const { title } = req.body;
+
+        if (!req.user) return res.status(401).json({
+            success: false,
+            message: "Unauthorized",
+        });
+
         if (!title) return res.status(400).json({
             message: "All feilds Are Required",
         });
-        const newTodo = await todosModels.create({ title });
+
+        const user = req.user.id;
+
+        const newTodo = await todosModels.create({ title, user });
 
         if (!newTodo) return res.status(400).json({
             message: "Failed To Create",
@@ -32,7 +41,7 @@ export const addTodos = async (req, res) => {
         res.status(201).json({
             message: "Created Successfully",
             newTodo
-        })
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({
